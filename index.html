@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M Search</title>
-
 <style>
 body{
   margin:0;
@@ -27,15 +26,19 @@ body{
   text-align:center;
 }
 .emoji-logo{
-  font-size:140px;   /* BIG 💾 */
+  font-size:140px;
   animation:zoom 1.5s infinite alternate;
 }
 .splash-text{
   margin-top:10px;
   font-size:28px;
   font-weight:bold;
-  color:who;
 }
+.splash-text .m-color span:nth-child(1){ color:#4285F4; } /* Blue */
+.splash-text .m-color span:nth-child(2){ color:#EA4335; } /* Red */
+.splash-text .m-color span:nth-child(3){ color:#FBBC05; } /* Yellow */
+.splash-text .m-color span:nth-child(4){ color:#34A853; } /* Green */
+
 @keyframes zoom{
   from{transform:scale(1);}
   to{transform:scale(1.1);}
@@ -53,8 +56,11 @@ header{
   text-align:center;
   font-size:32px;
   font-weight:bold;
-  color:red;
 }
+.header-text .m-color span:nth-child(1){ color:#4285F4; }
+.header-text .m-color span:nth-child(2){ color:#EA4335; }
+.header-text .m-color span:nth-child(3){ color:#FBBC05; }
+.header-text .m-color span:nth-child(4){ color:#34A853; }
 
 /* ---------- MAIN ---------- */
 #container{
@@ -138,13 +144,17 @@ button{
 <div id="splash">
   <div class="splash-box">
     <div class="emoji-logo">🌐</div>
-    <div class="splash-text">M Search</div>
+    <div class="splash-text m-color">
+      <span>M</span><span> </span><span>S</span><span>earch</span>
+    </div>
   </div>
 </div>
 
 <header>
   <div class="header-logo">🌐</div>
-  <div class="header-text">M Search</div>
+  <div class="header-text m-color">
+    <span>M</span><span> </span><span>S</span><span>earch</span>
+  </div>
 </header>
 
 <div id="container">
@@ -178,8 +188,7 @@ const data={
  "what is google":"Google is a search engine.",
  "what is python":"Python is a programming language.",
  "what is computer":"Computer is an electronic machine.",
- "what is internet":"Internet is a global network.",
- "who is m.h":"m.h is founder of M Search Technology."
+ "what is internet":"Internet is a global network."
 };
 
 let history=JSON.parse(localStorage.getItem("msearch_history"))||[];
