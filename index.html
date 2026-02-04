@@ -12,6 +12,32 @@ body{
     font-family: Arial, sans-serif;
     background:#ffffff;
 }
+
+/* ---------- Splash Screen ---------- */
+#splash{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    z-index:9999;
+    transition:opacity 0.5s ease;
+}
+#splash h1{
+    font-size:36px;
+    color:red;
+    animation:zoom 1.5s infinite alternate;
+}
+@keyframes zoom{
+    from{transform:scale(1);}
+    to{transform:scale(1.1);}
+}
+
+/* ---------- Main UI ---------- */
 header{
     text-align:center;
     padding:20px 10px 10px;
@@ -98,25 +124,27 @@ button{
 
 <body>
 
+<!-- Splash -->
+<div id="splash">
+  <h1>M Search</h1>
+</div>
+
 <header>
   <h1>M Search</h1>
 </header>
 
 <div id="container">
+  <input id="q" placeholder="Search here">
+  <button id="searchBtn" onclick="search()">Search</button>
 
-<input id="q" placeholder="Search here">
+  <div id="answer"></div>
+  <a id="link" target="_blank">🔍 Search on Google</a>
 
-<button id="searchBtn" onclick="search()">Search</button>
-
-<div id="answer"></div>
-<a id="link" target="_blank">🔍 Search on Google</a>
-
-<div id="historyBox">
-    <h3>Search History</h3>
-    <div id="historyList"></div>
-    <button id="clearBtn" onclick="clearHistory()">Clear History</button>
-</div>
-
+  <div id="historyBox">
+      <h3>Search History</h3>
+      <div id="historyList"></div>
+      <button id="clearBtn" onclick="clearHistory()">Clear History</button>
+  </div>
 </div>
 
 <div id="bottomBar">
@@ -124,12 +152,18 @@ button{
 </div>
 
 <script>
+/* Splash hide after 2 sec */
+setTimeout(()=>{
+  const splash = document.getElementById("splash");
+  splash.style.opacity="0";
+  setTimeout(()=> splash.style.display="none",500);
+},2000);
+
 const data = {
   "what is google":"Google is a search engine.",
   "what is python":"Python is a programming language.",
   "what is computer":"Computer is an electronic machine.",
-  "what is internet":"Internet is a global network.",
-  "who is m.h":"m.h is founder of m search."
+  "what is internet":"Internet is a global network."
 };
 
 let history = JSON.parse(localStorage.getItem("msearch_history")) || [];
