@@ -7,129 +7,130 @@
 
 <style>
 body{
-    margin:0;
-    padding:0;
-    font-family: Arial, sans-serif;
-    background:#ffffff;
+  margin:0;
+  font-family:Arial,sans-serif;
+  background:#fff;
 }
 
-/* ---------- Splash Screen ---------- */
+/* ---------- SPLASH ---------- */
 #splash{
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    height:100%;
-    background:white;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    z-index:9999;
-    transition:opacity 0.5s ease;
+  position:fixed;
+  inset:0;
+  background:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+  transition:opacity .5s;
 }
-#splash h1{
-    font-size:36px;
-    color:red;
-    animation:zoom 1.5s infinite alternate;
+.emoji-logo{
+  font-size:140px;   /* BIG 🌐 */
+  animation:zoom 1.5s infinite alternate;
 }
 @keyframes zoom{
-    from{transform:scale(1);}
-    to{transform:scale(1.1);}
+  from{transform:scale(1);}
+  to{transform:scale(1.1);}
 }
 
-/* ---------- Main UI ---------- */
+/* ---------- HEADER ---------- */
 header{
-    text-align:center;
-    padding:20px 10px 10px;
+  text-align:center;
+  padding:20px 10px 10px;
+}
+.header-logo{
+  font-size:60px;
 }
 header h1{
-    color:red;
-    font-size:34px;
-    margin:0;
+  margin:5px 0 0;
+  font-size:32px;
+  color:red;
 }
+
+/* ---------- MAIN ---------- */
 #container{
-    max-width:500px;
-    margin:auto;
-    padding:15px;
+  max-width:500px;
+  margin:auto;
+  padding:15px;
 }
 input{
-    width:100%;
-    padding:16px;
-    font-size:18px;
-    border:1px solid #ddd;
-    border-radius:30px;
-    outline:none;
+  width:100%;
+  padding:16px;
+  font-size:18px;
+  border:1px solid #ddd;
+  border-radius:30px;
+  outline:none;
 }
-input:focus{
-    border-color:#4285f4;
-}
+input:focus{border-color:#4285f4}
+
 button{
-    width:100%;
-    margin-top:12px;
-    padding:14px;
-    font-size:18px;
-    border:none;
-    border-radius:30px;
-    cursor:pointer;
+  width:100%;
+  margin-top:12px;
+  padding:14px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  cursor:pointer;
 }
 #searchBtn{
-    background:linear-gradient(90deg, green, blue, red);
-    color:white;
+  background:linear-gradient(90deg,green,blue,red);
+  color:white;
 }
+
 #answer{
-    margin-top:20px;
-    font-size:20px;
-    line-height:1.5;
+  margin-top:20px;
+  font-size:20px;
+  line-height:1.5;
 }
 #link{
-    display:none;
-    margin-top:10px;
-    font-size:16px;
-    color:#1a73e8;
-    text-decoration:none;
+  display:none;
+  margin-top:10px;
+  font-size:16px;
+  color:#1a73e8;
+  text-decoration:none;
 }
+
+/* ---------- HISTORY ---------- */
 #historyBox{
-    display:none;
-    margin-top:20px;
-    border-top:1px solid #ddd;
-    padding-top:10px;
+  display:none;
+  margin-top:20px;
+  border-top:1px solid #ddd;
+  padding-top:10px;
 }
 .history-item{
-    padding:12px;
-    border-bottom:1px solid #eee;
-    cursor:pointer;
+  padding:12px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
 }
-.history-item:hover{
-    background:#f5f5f5;
-}
+.history-item:hover{background:#f5f5f5}
 #clearBtn{
-    background:red;
-    color:white;
-    margin-top:10px;
+  background:red;
+  color:white;
+  margin-top:10px;
 }
+
+/* ---------- BOTTOM ---------- */
 #bottomBar{
-    position:fixed;
-    bottom:0;
-    left:0;
-    right:0;
-    background:#fff;
-    border-top:1px solid #ddd;
-    padding:10px;
+  position:fixed;
+  bottom:0;left:0;right:0;
+  background:#fff;
+  border-top:1px solid #ddd;
+  padding:10px;
 }
 #historyBtn{
-    background:#f1f1f1;
+  background:#f1f1f1;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Splash -->
+<!-- SPLASH -->
 <div id="splash">
-  <h1>M Search</h1>
+  <div class="emoji-logo">🌐</div>
 </div>
 
 <header>
+  <div class="header-logo">🌐</div>
   <h1>M Search</h1>
 </header>
 
@@ -141,9 +142,9 @@ button{
   <a id="link" target="_blank">🔍 Search on Google</a>
 
   <div id="historyBox">
-      <h3>Search History</h3>
-      <div id="historyList"></div>
-      <button id="clearBtn" onclick="clearHistory()">Clear History</button>
+    <h3>Search History</h3>
+    <div id="historyList"></div>
+    <button id="clearBtn" onclick="clearHistory()">Clear History</button>
   </div>
 </div>
 
@@ -152,76 +153,72 @@ button{
 </div>
 
 <script>
-/* Splash hide after 2 sec */
+/* hide splash */
 setTimeout(()=>{
-  const splash = document.getElementById("splash");
-  splash.style.opacity="0";
-  setTimeout(()=> splash.style.display="none",500);
+  const s=document.getElementById("splash");
+  s.style.opacity=0;
+  setTimeout(()=>s.style.display="none",500);
 },2000);
 
-const data = {
-  "what is google":"Google is a search engine.",
-  "what is python":"Python is a programming language.",
-  "what is computer":"Computer is an electronic machine.",
-  "what is internet":"Internet is a global network."
+/* DATA */
+const data={
+ "what is google":"Google is a search engine.",
+ "what is python":"Python is a programming language.",
+ "what is computer":"Computer is an electronic machine.",
+ "what is internet":"Internet is a global network."
 };
 
-let history = JSON.parse(localStorage.getItem("msearch_history")) || [];
+let history=JSON.parse(localStorage.getItem("msearch_history"))||[];
 
-function saveHistory(q){
-  if(!history.includes(q)){
-    history.unshift(q);
-    localStorage.setItem("msearch_history", JSON.stringify(history));
-  }
-}
-
+/* SEARCH */
 function search(){
-  const q = document.getElementById("q").value.toLowerCase().trim();
-  const ans = document.getElementById("answer");
-  const link = document.getElementById("link");
+ const q=document.getElementById("q").value.toLowerCase().trim();
+ const ans=document.getElementById("answer");
+ const link=document.getElementById("link");
 
-  link.style.display="none";
-  if(!q){ ans.innerText=""; return; }
+ link.style.display="none";
+ if(!q){ans.innerText="";return;}
 
-  saveHistory(q);
-  renderHistory();
+ saveHistory(q); renderHistory();
 
-  if(data[q]){
-    ans.innerText = data[q];
-    ans.style.color = ["red","blue","green"][Math.floor(Math.random()*3)];
-  }else{
-    ans.innerText = "Answer not found";
-    ans.style.color = "black";
-    link.style.display="block";
-    link.href="https://www.google.com/search?q="+encodeURIComponent(q);
-  }
+ if(data[q]){
+   ans.innerText=data[q];
+   ans.style.color=["red","blue","green"][Math.floor(Math.random()*3)];
+ }else{
+   ans.innerText="Answer not found";
+   ans.style.color="black";
+   link.style.display="block";
+   link.href="https://www.google.com/search?q="+encodeURIComponent(q);
+ }
 }
 
+/* HISTORY */
+function saveHistory(q){
+ if(!history.includes(q)){
+  history.unshift(q);
+  localStorage.setItem("msearch_history",JSON.stringify(history));
+ }
+}
 function toggleHistory(){
-  const box = document.getElementById("historyBox");
-  box.style.display = box.style.display==="none" ? "block" : "none";
-  renderHistory();
+ const b=document.getElementById("historyBox");
+ b.style.display=b.style.display==="none"?"block":"none";
+ renderHistory();
 }
-
 function renderHistory(){
-  const list = document.getElementById("historyList");
-  list.innerHTML="";
-  history.forEach(q=>{
-    const div = document.createElement("div");
-    div.className="history-item";
-    div.innerText=q;
-    div.onclick=()=>{
-      document.getElementById("q").value=q;
-      search();
-    };
-    list.appendChild(div);
-  });
+ const l=document.getElementById("historyList");
+ l.innerHTML="";
+ history.forEach(q=>{
+  const d=document.createElement("div");
+  d.className="history-item";
+  d.innerText=q;
+  d.onclick=()=>{document.getElementById("q").value=q;search();}
+  l.appendChild(d);
+ });
 }
-
 function clearHistory(){
-  history=[];
-  localStorage.removeItem("msearch_history");
-  renderHistory();
+ history=[];
+ localStorage.removeItem("msearch_history");
+ renderHistory();
 }
 </script>
 
