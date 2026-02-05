@@ -1,101 +1,178 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MSearch</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MSearch</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: #121212;
-      color: white;
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0f0f0f;
+  color:white;
+}
 
-    .container {
-      width: 100%;
-      max-width: 420px;
-      text-align: center;
-      padding: 20px;
-    }
+/* SPLASH */
+#splash{
+  position:fixed;
+  inset:0;
+  background:#0f0f0f;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  z-index:1000;
+}
+#splashLogo{
+  font-size:52px;
+  font-weight:bold;
+}
+#splashLogo span{ color:#4285F4; }
 
-    /* Logo */
-    .logo {
-      font-size: 48px;       /* BIG TEXT */
-      font-weight: bold;
-      margin-bottom: 25px;
-      letter-spacing: 1px;
-    }
+/* COMMON */
+.page{ display:none; padding:22px; }
+.show{ display:block; }
 
-    /* Search box */
-    .search-box {
-      width: 100%;
-      height: 56px;
-      border-radius: 30px;
-      border: none;
-      outline: none;
-      padding: 0 20px;
-      font-size: 20px;       /* BIG TEXT */
-      background: #2a2a2a;
-      color: white;
-    }
+/* HEADER */
+.header{
+  text-align:center;
+  margin-top:40px;
+}
+.header h1{
+  font-size:48px;
+  margin-bottom:35px;
+}
 
-    /* Info cards */
-    .cards {
-      margin-top: 30px;
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-    }
+/* SEARCH BAR */
+.search-pad{
+  width:100%;
+  height:64px;
+  border-radius:40px;
+  border:none;
+  padding:0 26px;
+  font-size:22px;
+  background:#1f1f1f;
+  color:white;
+  outline:none;
+}
 
-    .card {
-      background: #1f1f1f;
-      border-radius: 16px;
-      padding: 22px;
-      font-size: 20px;       /* BIG TEXT */
-      text-align: left;
-    }
+/* BUTTON */
+.search-btn{
+  width:100%;
+  height:56px;
+  margin-top:20px;
+  border-radius:35px;
+  border:none;
+  font-size:20px;
+  background:#4285F4;
+  color:white;
+  cursor:pointer;
+}
 
-    .card-title {
-      font-size: 22px;
-      font-weight: bold;
-      margin-bottom: 8px;
-    }
-  </style>
+/* BIG BOXES */
+.big-box{
+  background:#1f1f1f;
+  border-radius:20px;
+  padding:26px;
+  margin-top:22px;
+}
+.big-box h2{
+  font-size:24px;
+  margin:0 0 10px;
+}
+.big-box p{
+  font-size:18px;
+  color:#ccc;
+}
+
+/* HISTORY */
+.history{ margin-top:20px; }
+.history-item{
+  padding:10px;
+  font-size:16px;
+  color:#aaa;
+}
+</style>
 </head>
 
 <body>
-  <div class="container">
 
-    <!-- Logo -->
-    <div class="logo">MSearch</div>
+<!-- SPLASH -->
+<div id="splash">
+  <div id="splashLogo">M<span>Search</span></div>
+</div>
 
-    <!-- Search -->
-    <input
-      type="text"
-      class="search-box"
-      placeholder="Search"
-    />
-
-    <!-- Information Boxes -->
-    <div class="cards">
-      <div class="card">
-        <div class="card-title">Information of Create World</div>
-        Explore knowledge, ideas, and information from the world.
-      </div>
-
-      <div class="card">
-        <div class="card-title">Mini Search Engine</div>
-        A simple and fast search experience built for learning.
-      </div>
-    </div>
-
+<!-- PAGE 1 -->
+<div id="page1" class="page show">
+  <div class="header">
+    <h1>MSearch</h1>
   </div>
+
+  <input class="search-pad" placeholder="Search on MSearch" onclick="goPage(2)">
+
+  <div class="big-box">
+    <h2>Information of Creative World</h2>
+    <p>Explore knowledge, ideas, and information from the world.</p>
+  </div>
+
+  <div class="big-box">
+    <h2>Mini Search Engine</h2>
+    <p>A simple and fast search experience built for learning.</p>
+  </div>
+</div>
+
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <input id="query" class="search-pad" placeholder="What is Python?">
+  <button class="search-btn" onclick="search()">Search</button>
+
+  <div class="history" id="history"></div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+  <h2>MSearch Result</h2>
+  <p style="font-size:20px"><b>Answer:</b> <span id="answer"></span></p>
+  <button class="search-btn" onclick="goPage(1)">Back</button>
+</div>
+
+<script>
+const data={
+  "what is python":"Python is a programming language.",
+  "what is google":"Google is a search engine.",
+  "what is computer":"A computer is an electronic machine."
+};
+
+let history=[];
+
+function goPage(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));
+  document.getElementById("page"+n).classList.add("show");
+}
+
+function search(){
+  let q=document.getElementById("query").value.toLowerCase();
+  history.unshift(q);
+  renderHistory();
+  document.getElementById("answer").innerText=data[q] || "Answer not found";
+  goPage(3);
+}
+
+function renderHistory(){
+  let h=document.getElementById("history");
+  h.innerHTML="";
+  history.forEach(i=>{
+    let d=document.createElement("div");
+    d.className="history-item";
+    d.innerText=i;
+    h.appendChild(d);
+  });
+}
+
+setTimeout(()=>{
+  document.getElementById("splash").style.display="none";
+},2000);
+</script>
+
 </body>
-  </html>
+</html>
