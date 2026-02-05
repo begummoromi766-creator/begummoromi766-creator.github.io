@@ -6,8 +6,14 @@
 <title>MSearch</title>
 
 <style>
-body{
+*{ box-sizing:border-box; }
+
+html,body{
   margin:0;
+  padding:0;
+  width:100%;
+  height:100%;
+  overflow:hidden; /* NO SCROLL */
   font-family:Arial, sans-serif;
   background:#0f0f0f;
   color:white;
@@ -29,8 +35,12 @@ body{
 }
 #splashLogo span{ color:#4285F4; }
 
-/* COMMON */
-.page{ display:none; padding:22px; }
+/* PAGES */
+.page{
+  display:none;
+  height:100%;
+  padding:22px;
+}
 .show{ display:block; }
 
 /* HEADER */
@@ -69,7 +79,7 @@ body{
   cursor:pointer;
 }
 
-/* BIG BOXES */
+/* BIG BOX */
 .big-box{
   background:#1f1f1f;
   border-radius:20px;
@@ -86,11 +96,27 @@ body{
 }
 
 /* HISTORY */
-.history{ margin-top:20px; }
+.history{
+  margin-top:25px;
+}
 .history-item{
-  padding:10px;
-  font-size:16px;
-  color:#aaa;
+  display:flex;
+  align-items:center;
+  padding:12px 8px;
+  font-size:18px;
+  color:#ccc;
+  cursor:pointer;
+}
+.history-item:hover{
+  background:#1a1a1a;
+  border-radius:10px;
+}
+.blue-dot{
+  width:10px;
+  height:10px;
+  background:#4285F4;
+  border-radius:50%;
+  margin-right:12px;
 }
 </style>
 </head>
@@ -151,24 +177,36 @@ function goPage(n){
 }
 
 function search(){
-  let q=document.getElementById("query").value.toLowerCase();
+  let q=document.getElementById("query").value.trim().toLowerCase();
+  if(!q) return;
+
+  history = history.filter(item => item !== q);
   history.unshift(q);
+
   renderHistory();
-  document.getElementById("answer").innerText=data[q] || "Answer not found";
+
+  document.getElementById("answer").innerText =
+    data[q] || "Answer not found";
+
   goPage(3);
 }
 
 function renderHistory(){
   let h=document.getElementById("history");
   h.innerHTML="";
-  history.forEach(i=>{
+
+  history.forEach(text=>{
     let d=document.createElement("div");
     d.className="history-item";
-    d.innerText=i;
+    d.innerHTML=`<div class="blue-dot"></div>${text}`;
+    d.onclick=()=>{
+      document.getElementById("query").value=text;
+    };
     h.appendChild(d);
   });
 }
 
+/* SPLASH */
 setTimeout(()=>{
   document.getElementById("splash").style.display="none";
 },2000);
