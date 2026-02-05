@@ -4,136 +4,103 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>M Search</title>
+
 <style>
 body{
   margin:0;
-  font-family:Arial,sans-serif;
+  font-family:Arial, sans-serif;
   background:#fff;
 }
 
-/* ---------- SPLASH ---------- */
+/* SPLASH */
 #splash{
   position:fixed;
   inset:0;
-  background:#fff;
+  background:white;
   display:flex;
-  align-items:center;
+  flex-direction:column;
   justify-content:center;
-  z-index:9999;
-  transition:opacity .5s;
+  align-items:center;
+  z-index:1000;
 }
-.splash-box{
-  text-align:center;
-}
-.emoji-logo{
-  font-size:140px;
-  animation:zoom 1.5s infinite alternate;
-}
-.splash-text{
-  margin-top:10px;
-  font-size:28px;
+#splashLogo{
+  font-size:42px;
   font-weight:bold;
 }
-.splash-text .m-color span:nth-child(1){ color:#4285F4; } /* Blue */
-.splash-text .m-color span:nth-child(2){ color:#EA4335; } /* Red */
-.splash-text .m-color span:nth-child(3){ color:#FBBC05; } /* Yellow */
-.splash-text .m-color span:nth-child(4){ color:#34A853; } /* Green */
-
-@keyframes zoom{
-  from{transform:scale(1);}
-  to{transform:scale(1.1);}
+#splashLogo span{
+  color:red;
 }
 
-/* ---------- HEADER ---------- */
-header{
+/* COMMON */
+.page{
+  display:none;
+  padding:20px;
+}
+.show{
+  display:block;
+}
+
+/* HEADER */
+.header{
   text-align:center;
-  padding:20px 10px 10px;
+  position:relative;
 }
-.header-logo{
-  font-size:60px;
+.dots{
+  position:absolute;
+  right:10px;
+  top:10px;
 }
-.header-text{
-  text-align:center;
-  font-size:32px;
-  font-weight:bold;
+.dots span{
+  height:6px;
+  width:6px;
+  background:red;
+  border-radius:50%;
+  display:inline-block;
+  margin-left:3px;
 }
-.header-text .m-color span:nth-child(1){ color:#4285F4; }
-.header-text .m-color span:nth-child(2){ color:#EA4335; }
-.header-text .m-color span:nth-child(3){ color:#FBBC05; }
-.header-text .m-color span:nth-child(4){ color:#34A853; }
 
-/* ---------- MAIN ---------- */
-#container{
-  max-width:500px;
-  margin:auto;
-  padding:15px;
-}
-input{
-  width:100%;
-  padding:16px;
-  font-size:18px;
-  border:1px solid #ddd;
-  border-radius:30px;
-  outline:none;
-}
-input:focus{border-color:#4285f4}
-
-button{
-  width:100%;
-  margin-top:12px;
+/* BUTTONS */
+.btn{
   padding:14px;
-  font-size:18px;
+  border-radius:25px;
   border:none;
-  border-radius:30px;
+  font-size:18px;
   cursor:pointer;
 }
-#searchBtn{
-  background:linear-gradient(90deg,green,blue,red);
-  color:white;
+.search-pad{
+  width:100%;
+  border:1px solid #ccc;
 }
-
-#answer{
-  margin-top:20px;
-  font-size:20px;
-  line-height:1.5;
-}
-#link{
-  display:none;
-  margin-top:10px;
-  font-size:16px;
-  color:#1a73e8;
-  text-decoration:none;
-}
-
-/* ---------- HISTORY ---------- */
-#historyBox{
-  display:none;
-  margin-top:20px;
-  border-top:1px solid #ddd;
-  padding-top:10px;
-}
-.history-item{
-  padding:12px;
-  border-bottom:1px solid #eee;
-  cursor:pointer;
-}
-.history-item:hover{background:#f5f5f5}
-#clearBtn{
+.search-btn{
+  margin-top:15px;
+  width:100%;
   background:red;
   color:white;
-  margin-top:10px;
 }
 
-/* ---------- BOTTOM ---------- */
-#bottomBar{
-  position:fixed;
-  bottom:0;left:0;right:0;
-  background:#fff;
-  border-top:1px solid #ddd;
-  padding:10px;
+/* BOX */
+.big-box{
+  border:1px solid #aaa;
+  padding:20px;
+  margin-top:20px;
+  text-align:center;
 }
-#historyBtn{
-  background:#f1f1f1;
+
+/* HISTORY */
+.history{
+  margin-top:20px;
+}
+.history-item{
+  display:flex;
+  align-items:center;
+  margin-bottom:8px;
+}
+.dot{
+  height:10px;
+  width:10px;
+  background:green;
+  border-radius:50%;
+  margin-right:10px;
 }
 </style>
 </head>
@@ -142,107 +109,75 @@ button{
 
 <!-- SPLASH -->
 <div id="splash">
-  <div class="splash-box">
-    <div class="emoji-logo">🌐</div>
-    <div class="splash-text m-color">
-      <span>M</span><span> </span><span>S</span><span>earch</span>
-    </div>
-  </div>
+  <div id="splashLogo">M <span>SEARCH</span></div>
 </div>
 
-<header>
-  <div class="header-logo">🌐</div>
-  <div class="header-text m-color">
-    <span>M</span><span> </span><span>S</span><span>earch</span>
+<!-- PAGE 1 -->
+<div id="page1" class="page show">
+  <div class="header">
+    <div class="dots"><span></span><span></span><span></span></div>
+    <h1>M <span style="color:red">SEARCH</span></h1>
   </div>
-</header>
 
-<div id="container">
-  <input id="q" placeholder="Search here">
-  <button id="searchBtn" onclick="search()">Search</button>
+  <button class="btn search-pad" onclick="goPage(2)">Search Pad</button>
 
-  <div id="answer"></div>
-  <a id="link" target="_blank">🔍 Search on Google</a>
-
-  <div id="historyBox">
-    <h3>Search History</h3>
-    <div id="historyList"></div>
-    <button id="clearBtn" onclick="clearHistory()">Clear History</button>
-  </div>
+  <div class="big-box">Information of Creative World</div>
+  <div class="big-box">Mini Search Engine</div>
 </div>
 
-<div id="bottomBar">
-  <button id="historyBtn" onclick="toggleHistory()">History</button>
+<!-- PAGE 2 -->
+<div id="page2" class="page">
+  <input id="query" class="btn search-pad" placeholder="What is python">
+  <button class="btn search-btn" onclick="search()">SEARCH</button>
+
+  <div class="history" id="history"></div>
+</div>
+
+<!-- PAGE 3 -->
+<div id="page3" class="page">
+  <h2>M <span style="color:red">SEARCH</span></h2>
+  <p><b>ANSWER = </b><span id="answer"></span></p>
+  <button class="btn search-btn" onclick="goPage(1)">BACK</button>
 </div>
 
 <script>
-/* hide splash after 2 seconds */
-setTimeout(()=>{
-  const s=document.getElementById("splash");
-  s.style.opacity=0;
-  setTimeout(()=>s.style.display="none",500);
-},2000);
-
-/* DATA */
 const data={
- "what is google":"Google is a search engine.",
- "what is python":"Python is a programming language.",
- "what is computer":"Computer is an electronic machine.",
- "what is internet":"Internet is a global network."
+  "what is python":"Python is a language.",
+  "what is google":"Google is a search engine.",
+  "what is computer":"Computer is an electronic machine."
 };
 
-let history=JSON.parse(localStorage.getItem("msearch_history"))||[];
+let history=[];
 
-/* SEARCH */
+function goPage(n){
+  document.querySelectorAll(".page").forEach(p=>p.classList.remove("show"));
+  document.getElementById("page"+n).classList.add("show");
+}
+
 function search(){
- const q=document.getElementById("q").value.toLowerCase().trim();
- const ans=document.getElementById("answer");
- const link=document.getElementById("link");
-
- link.style.display="none";
- if(!q){ans.innerText=""; return;}
-
- saveHistory(q); renderHistory();
-
- if(data[q]){
-   ans.innerText=data[q];
-   ans.style.color=["red","blue","green"][Math.floor(Math.random()*3)];
- }else{
-   ans.innerText="Answer not found";
-   ans.style.color="black";
-   link.style.display="block";
-   link.href="https://www.google.com/search?q="+encodeURIComponent(q);
- }
-}
-
-/* HISTORY */
-function saveHistory(q){
- if(!history.includes(q)){
+  let q=document.getElementById("query").value.toLowerCase();
   history.unshift(q);
-  localStorage.setItem("msearch_history",JSON.stringify(history));
- }
+  renderHistory();
+
+  document.getElementById("answer").innerText=data[q]||"Answer not found";
+  goPage(3);
 }
-function toggleHistory(){
- const b=document.getElementById("historyBox");
- b.style.display = b.style.display==="none"?"block":"none";
- renderHistory();
-}
+
 function renderHistory(){
- const l=document.getElementById("historyList");
- l.innerHTML="";
- history.forEach(q=>{
-  const d=document.createElement("div");
-  d.className="history-item";
-  d.innerText=q;
-  d.onclick=()=>{document.getElementById("q").value=q;search();}
-  l.appendChild(d);
- });
+  let h=document.getElementById("history");
+  h.innerHTML="";
+  history.forEach(i=>{
+    let d=document.createElement("div");
+    d.className="history-item";
+    d.innerHTML=`<div class="dot"></div>${i}`;
+    h.appendChild(d);
+  });
 }
-function clearHistory(){
- history=[];
- localStorage.removeItem("msearch_history");
- renderHistory();
-}
+
+/* SPLASH TIMER */
+setTimeout(()=>{
+  document.getElementById("splash").style.display="none";
+},2500);
 </script>
 
 </body>
